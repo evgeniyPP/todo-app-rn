@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import theme from "../theme";
 
 const Navbar = props => {
   return (
     <View style={css.navbar}>
-      <Text style={css.text}>Todo App on React Native</Text>
+      <Text style={css.text}>Todo App on React Native!</Text>
     </View>
   );
 };
@@ -14,7 +15,7 @@ const css = StyleSheet.create({
     height: 70,
     alignItems: "center",
     justifyContent: "flex-end",
-    backgroundColor: "#3949ab",
+    backgroundColor: theme.mainColor,
     paddingBottom: 10
   },
   text: {

@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const Todo = ({ todo, index, deleteTodo }) => {
+const Todo = ({ todo, index, openTodo, deleteTodo }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
+      onPress={openTodo.bind(null, index)}
       onLongPress={deleteTodo.bind(null, index)}
     >
       <Text style={css.todo}>{todo}</Text>
