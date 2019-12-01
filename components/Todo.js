@@ -1,8 +1,15 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const Todo = ({ todo }) => {
-  return <Text style={css.todo}>{todo}</Text>;
+const Todo = ({ todo, index, deleteTodo }) => {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      onLongPress={deleteTodo.bind(null, index)}
+    >
+      <Text style={css.todo}>{todo}</Text>
+    </TouchableOpacity>
+  );
 };
 
 const css = StyleSheet.create({
