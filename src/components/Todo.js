@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { TextRegular } from "./ui/Fonts";
 
 const Todo = ({ todo, index, openTodo, deleteTodo }) => {
   return (
@@ -8,7 +9,7 @@ const Todo = ({ todo, index, openTodo, deleteTodo }) => {
       onPress={openTodo.bind(null, index)}
       onLongPress={deleteTodo.bind(null, index)}
     >
-      <Text style={css.todo}>{todo}</Text>
+      <TextRegular style={css.todo}>{todo}</TextRegular>
     </TouchableOpacity>
   );
 };

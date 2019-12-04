@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Button, Modal } from "react-native";
+import { View, StyleSheet, TextInput, Modal } from "react-native";
+import AppButton from "./ui/AppButton";
 import theme from "../theme";
 
 export default ({ visible, onCancel, value, changeTodo }) => {
@@ -21,12 +22,10 @@ export default ({ visible, onCancel, value, changeTodo }) => {
           onChangeText={setText}
         />
         <View style={css.buttons}>
-          <Button
-            title="Отменить"
-            onPress={onCancel}
-            color={theme.dangerColor}
-          />
-          <Button title="Изменить" onPress={handleChange} />
+          <AppButton onPress={onCancel} color={theme.dangerColor}>
+            Отменить
+          </AppButton>
+          <AppButton onPress={handleChange}>Изменить</AppButton>
         </View>
       </View>
     </Modal>

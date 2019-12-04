@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Button, Alert } from "react-native";
+import { View, StyleSheet, TextInput, Alert, Keyboard } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import theme from "../theme";
 
 const AddTodo = ({ onSubmit }) => {
@@ -9,8 +10,9 @@ const AddTodo = ({ onSubmit }) => {
     if (value.trim()) {
       onSubmit(value);
       setValue("");
+      Keyboard.dismiss();
     } else {
-      Alert.alert("Поле пустое");
+      Alert.alert(null, "Задача не может быть пустой");
     }
   };
 
@@ -24,7 +26,9 @@ const AddTodo = ({ onSubmit }) => {
         autoCorrect={false}
         autoCapitalize="none"
       />
-      <Button title="Добавить" onPress={pressHandler} />
+      <AntDesign.Button onPress={pressHandler} name="pluscircleo">
+        Добавить
+      </AntDesign.Button>
     </View>
   );
 };
