@@ -1,53 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { TextRegular } from "../components/ui/Fonts";
+import todoContext from "../context/todo/todoContext";
+import screenContext from "../context/screen/screenContext";
 import AppButton from "../components/ui/AppButton";
 import AppCard from "../components/ui/AppCard";
 import theme from "../theme";
 import EditModal from "../components/EditModal";
 
-const TodoScreen = ({
-  todoItem,
-  closeTodo,
-  deleteTodo,
-  index,
-  changeTodo,
-  todoId
-}) => {
+const TodoScreen = () => {
+  const { todos, updateTodo, removeTodo } = useContext(todoContext);
+  const { todoId, changeScreen } = useContext(screenContext);
   const [modal, setModal] = useState(false);
-
-  const setModalTrue = () => {
-    setModal(true);
-  };
-  const setModalFalse = () => {
-    setModal(false);
-  };
+  const thisTodo = todos[todoId];
 
   return (
     <View>
       <EditModal
         visible={modal}
-        onCancel={setModalFalse}
-        value={todoItem}
-        changeTodo={changeTodo}
+        onCancel={() => setModal(false)}
+        value={thisTodo}
+        changeTodo={updateTodo}
         todoId={todoId}
       />
       <AppCard style={css.card}>
-        <TextRegular style={css.text}>{todoItem}</TextRegular>
-        <AppButton onPress={setModalTrue}>
+        <TextRegular style={css.text}>{thisTodo}</TextRegular>
+        <AppButton onPress={() => setModal(true)}>
           <FontAwesome name="edit" size={20} />
         </AppButton>
       </AppCard>
       <View style={css.buttons}>
         <View style={css.button}>
-          <AppButton onPress={closeTodo} color={theme.greyColor}>
+          <AppButton onPress={() => changeScreen(null)} color={theme.greyColor}>
             <AntDesign name="back" size={20} color="#fff" />
           </AppButton>
         </View>
         <View style={css.button}>
           <AppButton
-            onPress={deleteTodo.bind(null, index)}
+            onPress={() => removeTodo(todoId)}
             color={theme.dangerColor}
           >
             <FontAwesome name="remove" size={20} />

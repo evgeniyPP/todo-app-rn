@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
+import todoContext from "../context/todo/todoContext";
+import screenContext from "../context/screen/screenContext";
 import Input from "../components/AddTodo";
 import Todo from "../components/Todo";
 import theme from "../theme";
 
-const MainScreen = ({ todos, openTodo, addTodo, deleteTodo }) => {
+const MainScreen = () => {
+  const { todos, addTodo, removeTodo } = useContext(todoContext);
+  const { changeScreen } = useContext(screenContext);
+
   const [deviceWidth, setDeviceWidth] = useState(
     Dimensions.get("window").width - theme.paddingHorizontal * 2
   );
@@ -31,8 +36,8 @@ const MainScreen = ({ todos, openTodo, addTodo, deleteTodo }) => {
           <Todo
             todo={item}
             index={index}
-            openTodo={openTodo}
-            deleteTodo={deleteTodo}
+            openTodo={changeScreen}
+            deleteTodo={removeTodo}
           />
         )}
         keyExtractor={(todo, index) => index.toString()}
