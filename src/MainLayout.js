@@ -3,16 +3,13 @@ import { StyleSheet, View, Alert } from "react-native";
 import Navbar from "./components/Navbar";
 import MainScreen from "./screens/MainScreen";
 import TodoScreen from "./screens/TodoScreen";
-import theme from "./theme";
 import TodoContext from "./context/todo/todoContext";
+import ScreenContext from "./context/screen/screenContext";
+import theme from "./theme";
 
 export default () => {
   const { todos, addTodo, updateTodo, removeTodo } = useContext(TodoContext);
-  const [todoId, setTodoId] = useState(null);
-
-  //   const addTodo = todo => {
-  //     setTodos(prev => [...prev, todo]);
-  //   };
+  const { todoId, changeScreen } = useContext(ScreenContext);
 
   //   const deleteTodo = index => {
   //     Alert.alert(
@@ -37,24 +34,18 @@ export default () => {
   //     );
   //   };
 
-  const openTodo = index => {
-    setTodoId(index);
-  };
+  // const openTodo = index => {
+  //   setTodoId(index);
+  // };
 
-  const closeTodo = () => {
-    setTodoId(null);
-  };
-
-  //   const changeTodo = newValue => {
-  //     setTodos(prev =>
-  //       prev.map((todo, currIndex) => (currIndex === todoId ? newValue : todo))
-  //     );
-  //   };
+  // const closeTodo = () => {
+  //   setTodoId(null);
+  // };
 
   let content = (
     <MainScreen
       todos={todos}
-      openTodo={openTodo}
+      openTodo={changeScreen}
       addTodo={addTodo}
       deleteTodo={removeTodo}
     />
@@ -64,7 +55,7 @@ export default () => {
     content = (
       <TodoScreen
         todoItem={todos[todoId]}
-        closeTodo={closeTodo}
+        closeTodo={() => changeScreen(null)}
         deleteTodo={removeTodo}
         index={todoId}
         changeTodo={updateTodo}
