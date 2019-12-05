@@ -7,35 +7,35 @@ import theme from "./theme";
 import TodoContext from "./context/todo/todoContext";
 
 export default () => {
-  const todosContext = useContext(TodoContext);
+  const { todos, addTodo, updateTodo, removeTodo } = useContext(TodoContext);
   const [todoId, setTodoId] = useState(null);
 
-  const addTodo = todo => {
-    setTodos(prev => [...prev, todo]);
-  };
+  //   const addTodo = todo => {
+  //     setTodos(prev => [...prev, todo]);
+  //   };
 
-  const deleteTodo = index => {
-    Alert.alert(
-      "Удалить задачу?",
-      `Вы уверены, что хотите удалить задачу "${todos[index]}"?`,
-      [
-        {
-          text: "Отмена",
-          style: "positive"
-        },
-        {
-          text: "Удалить",
-          style: "negative",
-          onPress: () => {
-            setTodoId(null);
-            setTodos(prev =>
-              prev.filter((todo, currIndex) => currIndex !== index)
-            );
-          }
-        }
-      ]
-    );
-  };
+  //   const deleteTodo = index => {
+  //     Alert.alert(
+  //       "Удалить задачу?",
+  //       `Вы уверены, что хотите удалить задачу "${todos[index]}"?`,
+  //       [
+  //         {
+  //           text: "Отмена",
+  //           style: "positive"
+  //         },
+  //         {
+  //           text: "Удалить",
+  //           style: "negative",
+  //           onPress: () => {
+  //             setTodoId(null);
+  //             setTodos(prev =>
+  //               prev.filter((todo, currIndex) => currIndex !== index)
+  //             );
+  //           }
+  //         }
+  //       ]
+  //     );
+  //   };
 
   const openTodo = index => {
     setTodoId(index);
@@ -45,18 +45,18 @@ export default () => {
     setTodoId(null);
   };
 
-  const changeTodo = newValue => {
-    setTodos(prev =>
-      prev.map((todo, currIndex) => (currIndex === todoId ? newValue : todo))
-    );
-  };
+  //   const changeTodo = newValue => {
+  //     setTodos(prev =>
+  //       prev.map((todo, currIndex) => (currIndex === todoId ? newValue : todo))
+  //     );
+  //   };
 
   let content = (
     <MainScreen
-      todos={todosContext.todos}
+      todos={todos}
       openTodo={openTodo}
       addTodo={addTodo}
-      deleteTodo={deleteTodo}
+      deleteTodo={removeTodo}
     />
   );
 
@@ -65,9 +65,10 @@ export default () => {
       <TodoScreen
         todoItem={todos[todoId]}
         closeTodo={closeTodo}
-        deleteTodo={deleteTodo}
+        deleteTodo={removeTodo}
         index={todoId}
-        changeTodo={changeTodo}
+        changeTodo={updateTodo}
+        todoId={todoId}
       />
     );
   }

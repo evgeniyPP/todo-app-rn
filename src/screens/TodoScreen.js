@@ -7,7 +7,14 @@ import AppCard from "../components/ui/AppCard";
 import theme from "../theme";
 import EditModal from "../components/EditModal";
 
-const TodoScreen = ({ todoItem, closeTodo, deleteTodo, index, changeTodo }) => {
+const TodoScreen = ({
+  todoItem,
+  closeTodo,
+  deleteTodo,
+  index,
+  changeTodo,
+  todoId
+}) => {
   const [modal, setModal] = useState(false);
 
   const setModalTrue = () => {
@@ -24,6 +31,7 @@ const TodoScreen = ({ todoItem, closeTodo, deleteTodo, index, changeTodo }) => {
         onCancel={setModalFalse}
         value={todoItem}
         changeTodo={changeTodo}
+        todoId={todoId}
       />
       <AppCard style={css.card}>
         <TextRegular style={css.text}>{todoItem}</TextRegular>

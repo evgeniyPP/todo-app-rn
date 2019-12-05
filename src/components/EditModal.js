@@ -3,11 +3,11 @@ import { View, StyleSheet, TextInput, Modal } from "react-native";
 import AppButton from "./ui/AppButton";
 import theme from "../theme";
 
-export default ({ visible, onCancel, value, changeTodo }) => {
+export default ({ visible, onCancel, value, changeTodo, todoId }) => {
   const [text, setText] = useState(value);
 
   const handleChange = () => {
-    changeTodo(text);
+    changeTodo(todoId, text);
     onCancel();
   };
 
