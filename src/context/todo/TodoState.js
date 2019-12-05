@@ -15,12 +15,12 @@ export default ({ children }) => {
   };
   const [state, dispatch] = useReducer(todoReducer, initialState);
 
-  const addTodo = payload => dispatch({ type: ADD_TODO, payload });
+  const addTodo = value => dispatch({ type: ADD_TODO, value });
 
   const updateTodo = (id, value) =>
     dispatch({ type: UPDATE_TODO, payload: { id, value } });
 
-  const removeTodo = payload => dispatch({ type: REMOVE_TODO, payload });
+  const removeTodo = id => dispatch({ type: REMOVE_TODO, id });
 
   return (
     <TodoContext.Provider
