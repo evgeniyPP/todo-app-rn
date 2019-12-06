@@ -13,13 +13,13 @@ const TodoScreen = () => {
   const { todos, updateTodo, removeTodo } = useContext(todoContext);
   const { todoId, changeScreen } = useContext(screenContext);
   const [modal, setModal] = useState(false);
-  const thisTodo = todos[todoId];
+  const thisTodo = todos.find(todo => todo.id === todoId).value;
 
   return (
     <View>
       <EditModal
         visible={modal}
-        onCancel={() => setModal(false)}
+        onCancel={() => setModal(falses)}
         value={thisTodo}
         changeTodo={updateTodo}
         todoId={todoId}

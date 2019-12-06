@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
 import todoContext from "../context/todo/todoContext";
 import screenContext from "../context/screen/screenContext";
@@ -7,12 +7,18 @@ import Todo from "../components/Todo";
 import theme from "../theme";
 
 const MainScreen = () => {
-  const { todos, addTodo, removeTodo } = useContext(todoContext);
+  const { todos, addTodo, removeTodo, fetchTodos } = useContext(todoContext);
   const { changeScreen } = useContext(screenContext);
 
   const [deviceWidth, setDeviceWidth] = useState(
     Dimensions.get("window").width - theme.paddingHorizontal * 2
   );
+
+  const loadTodos = useCallback(async () => await fetchTodos(), [fetchTodos]);
+
+  useEffect(() => {
+    loadTodos();
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -32,15 +38,15 @@ const MainScreen = () => {
     <View style={{ width: deviceWidth, flex: 1 }}>
       <FlatList
         data={todos}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <Todo
-            todo={item}
-            index={index}
+            todo={item.value}
+            index={item.id}
             openTodo={changeScreen}
             deleteTodo={removeTodo}
           />
         )}
-        keyExtractor={(todo, index) => index.toString()}
+        keyExtractor={item => item.id}
       />
     </View>
   );
