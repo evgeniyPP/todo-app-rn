@@ -17,7 +17,7 @@ import {
 export default ({ children }) => {
   const initialState = {
     todos: [],
-    loading: false,
+    loading: true,
     error: null
   };
   const [{ todos, loading, error }, dispatch] = useReducer(
@@ -66,7 +66,13 @@ export default ({ children }) => {
     );
   };
 
+  const showLoader = () => dispatch({ type: SHOW_LOADER });
+  const hideLoader = () => dispatch({ type: HIDE_LOADER });
+  const showError = () => dispatch({ type: SHOW_ERROR });
+  const clearError = () => dispatch({ type: CLEAR_ERROR });
+
   const fetchTodos = async () => {
+    showLoader();
     const response = await fetch(URL, {
       method: "GET",
       headers: {
@@ -76,12 +82,8 @@ export default ({ children }) => {
     const data = await response.json();
     const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
     dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
+    hideLoader();
   };
-
-  const showLoader = () => dispatch({ type: SHOW_LOADER });
-  const hideLoader = () => dispatch({ type: HIDE_LOADER });
-  const showError = () => dispatch({ type: SHOW_ERROR });
-  const clearError = () => dispatch({ type: CLEAR_ERROR });
 
   return (
     <TodoContext.Provider

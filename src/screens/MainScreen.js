@@ -4,10 +4,13 @@ import todoContext from "../context/todo/todoContext";
 import screenContext from "../context/screen/screenContext";
 import Input from "../components/AddTodo";
 import Todo from "../components/Todo";
+import { AppLoader } from "../components/ui/AppLoader";
 import theme from "../theme";
 
 const MainScreen = () => {
-  const { todos, addTodo, removeTodo, fetchTodos } = useContext(todoContext);
+  const { todos, loading, addTodo, removeTodo, fetchTodos } = useContext(
+    todoContext
+  );
   const { changeScreen } = useContext(screenContext);
 
   const [deviceWidth, setDeviceWidth] = useState(
@@ -33,6 +36,10 @@ const MainScreen = () => {
       Dimensions.removeEventListener("change", update);
     };
   });
+
+  if (loading) {
+    return <AppLoader />;
+  }
 
   let content = (
     <View style={{ width: deviceWidth, flex: 1 }}>
