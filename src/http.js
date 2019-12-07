@@ -1,9 +1,8 @@
 export default {
-  _HEADERS: { "Content-Type": "application/json" },
   async request(url, method = "GET", data) {
     const config = {
       method,
-      headers: this._HEADERS
+      headers: { "Content-Type": "application/json" }
     };
 
     if (method === "POST" || method === "PATCH") {

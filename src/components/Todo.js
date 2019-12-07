@@ -2,14 +2,17 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { TextRegular } from "./ui/Fonts";
 
-const Todo = ({ todo, index, openTodo, deleteTodo }) => {
+const Todo = ({ todo, id, openTodo, checkTodo }) => {
+  const isChecked = todo.checked ? { textDecorationLine: "line-through" } : {};
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={openTodo.bind(null, index)}
-      onLongPress={deleteTodo.bind(null, index)}
+      onPress={openTodo.bind(null, id)}
+      onLongPress={checkTodo.bind(null, id)}
     >
-      <TextRegular style={css.todo}>{todo}</TextRegular>
+      <TextRegular style={{ ...css.todo, ...isChecked }}>
+        {todo.value}
+      </TextRegular>
     </TouchableOpacity>
   );
 };

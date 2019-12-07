@@ -7,3 +7,4 @@ export const SHOW_LOADER = "epp-todo-native/SHOW_LOADER";
 export const HIDE_LOADER = "epp-todo-native/HIDE_LOADER";
 export const SHOW_ERROR = "epp-todo-native/SHOW_ERROR";
 export const CLEAR_ERROR = "epp-todo-native/CLEAR_ERROR";
+export const CHECK_TODO = "epp-todo-native/CHECK_TODO";

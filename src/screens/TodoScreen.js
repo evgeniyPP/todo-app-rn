@@ -10,32 +10,46 @@ import theme from "../theme";
 import EditModal from "../components/EditModal";
 
 const TodoScreen = () => {
-  const { todos, updateTodo, removeTodo } = useContext(todoContext);
+  const { todos, updateTodo, removeTodo, checkTodo } = useContext(todoContext);
   const { todoId, changeScreen } = useContext(screenContext);
   const [modal, setModal] = useState(false);
-  const thisTodo = todos.find(todo => todo.id === todoId).value;
+  const thisTodo = todos.find(todo => todo.id === todoId);
+  const value = thisTodo.value;
+  const isChecked = thisTodo.checked
+    ? { textDecorationLine: "line-through" }
+    : {};
 
   return (
-    <View>
+    <View style={css.todoScreen}>
       <EditModal
         visible={modal}
         onCancel={() => setModal(false)}
-        value={thisTodo}
+        value={value}
         changeTodo={updateTodo}
         todoId={todoId}
       />
       <AppCard style={css.card}>
-        <TextRegular style={css.text}>{thisTodo}</TextRegular>
+        <TextRegular style={{ ...css.text, ...isChecked }}>{value}</TextRegular>
       </AppCard>
-      <View style={css.editBtn}>
-        <AppButton onPress={() => setModal(true)}>
-          <FontAwesome name="edit" size={20} />
-        </AppButton>
+      <View style={css.buttons}>
+        <View style={css.button}>
+          <AppButton onPress={() => setModal(true)}>
+            <FontAwesome name="edit" size={25} />
+          </AppButton>
+        </View>
+        <View style={css.button}>
+          <AppButton
+            onPress={() => checkTodo(todoId)}
+            color={theme.orangeColor}
+          >
+            <FontAwesome name="check-circle" size={25} />
+          </AppButton>
+        </View>
       </View>
       <View style={css.buttons}>
         <View style={css.button}>
           <AppButton onPress={() => changeScreen(null)} color={theme.greyColor}>
-            <AntDesign name="back" size={20} color="#fff" />
+            <AntDesign name="back" size={25} color="#fff" />
           </AppButton>
         </View>
         <View style={css.button}>
@@ -43,7 +57,7 @@ const TodoScreen = () => {
             onPress={() => removeTodo(todoId)}
             color={theme.dangerColor}
           >
-            <FontAwesome name="remove" size={20} />
+            <FontAwesome name="remove" size={25} />
           </AppButton>
         </View>
       </View>
@@ -52,15 +66,20 @@ const TodoScreen = () => {
 };
 
 const css = StyleSheet.create({
+  todoScreen: {
+    flex: 1,
+    justifyContent: "center"
+  },
   text: {
     fontSize: 20
   },
   buttons: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-around"
   },
   button: {
-    width: Dimensions.get("window").width / 3
+    width: Dimensions.get("window").width / 3,
+    marginBottom: 10
   },
   card: {
     marginBottom: 20

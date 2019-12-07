@@ -11,7 +11,8 @@ import {
   HIDE_LOADER,
   SHOW_ERROR,
   CLEAR_ERROR,
-  FETCH_TODOS
+  FETCH_TODOS,
+  CHECK_TODO
 } from "../types";
 import http from "../../http";
 
@@ -33,10 +34,13 @@ export default ({ children }) => {
   const addTodo = async value => {
     clearError();
     try {
-      const data = await http.post(`${URL}/todos.json`, { value });
+      const data = await http.post(`${URL}/todos.json`, {
+        value,
+        checked: false
+      });
       dispatch({ type: ADD_TODO, payload: { id: data.name, value } });
     } catch (e) {
-      showError("Что-то пошло не так...");
+      showError();
     }
   };
 
@@ -46,7 +50,7 @@ export default ({ children }) => {
       await http.patch(`${URL}/todos/${id}.json`, { value });
       dispatch({ type: UPDATE_TODO, payload: { id, value } });
     } catch (e) {
-      showError("Что-то пошло не так...");
+      showError();
     }
   };
 
@@ -71,7 +75,7 @@ export default ({ children }) => {
               changeScreen(null);
               dispatch({ type: REMOVE_TODO, id });
             } catch (e) {
-              showError("Что-то пошло не так...");
+              showError();
             }
           }
         }
@@ -92,9 +96,19 @@ export default ({ children }) => {
       const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
       dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
     } catch (e) {
-      showError("Что-то пошло не так...");
+      showError();
     } finally {
       hideLoader();
+    }
+  };
+
+  const checkTodo = async id => {
+    try {
+      const todoChecked = !todos.find(todo => todo.id === id).checked;
+      await http.patch(`${URL}/todos/${id}.json`, { checked: todoChecked });
+      dispatch({ type: CHECK_TODO, id });
+    } catch (e) {
+      showError();
     }
   };
 
@@ -107,7 +121,8 @@ export default ({ children }) => {
         addTodo,
         updateTodo,
         removeTodo,
-        fetchTodos
+        fetchTodos,
+        checkTodo
       }}
     >
       {children}

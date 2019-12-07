@@ -10,7 +10,7 @@ import theme from "../theme";
 import { TextBold } from "../components/ui/Fonts";
 
 const MainScreen = () => {
-  const { todos, loading, error, addTodo, removeTodo, fetchTodos } = useContext(
+  const { todos, loading, error, addTodo, checkTodo, fetchTodos } = useContext(
     todoContext
   );
   const { changeScreen } = useContext(screenContext);
@@ -58,10 +58,10 @@ const MainScreen = () => {
         data={todos}
         renderItem={({ item }) => (
           <Todo
-            todo={item.value}
-            index={item.id}
+            todo={item}
+            id={item.id}
             openTodo={changeScreen}
-            deleteTodo={removeTodo}
+            checkTodo={checkTodo}
           />
         )}
         keyExtractor={item => item.id}
