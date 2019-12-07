@@ -13,6 +13,7 @@ import {
   CLEAR_ERROR,
   FETCH_TODOS
 } from "../types";
+import http from "../../http";
 
 export default ({ children }) => {
   const initialState = {
@@ -30,28 +31,19 @@ export default ({ children }) => {
   const URL = "https://epp-todo-react-native.firebaseio.com";
 
   const addTodo = async value => {
-    const response = await fetch(`${URL}/todos.json`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ value })
-    });
-    const data = await response.json();
-    dispatch({ type: ADD_TODO, payload: { id: data.name, value } });
-    if (data) return true;
+    clearError();
+    try {
+      const data = await http.post(`${URL}/todos.json`, { value });
+      dispatch({ type: ADD_TODO, payload: { id: data.name, value } });
+    } catch (e) {
+      showError("Что-то пошло не так...");
+    }
   };
 
   const updateTodo = async (id, value) => {
     clearError();
     try {
-      await fetch(`${URL}/todos/${id}.json`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ value })
-      });
+      await http.patch(`${URL}/todos/${id}.json`, { value });
       dispatch({ type: UPDATE_TODO, payload: { id, value } });
     } catch (e) {
       showError("Что-то пошло не так...");
@@ -75,12 +67,7 @@ export default ({ children }) => {
           onPress: async () => {
             clearError();
             try {
-              await fetch(`${URL}/todos/${id}.json`, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json"
-                }
-              });
+              await http.delete(`${URL}/todos/${id}.json`);
               changeScreen(null);
               dispatch({ type: REMOVE_TODO, id });
             } catch (e) {
@@ -101,13 +88,7 @@ export default ({ children }) => {
     showLoader();
     clearError();
     try {
-      const response = await fetch(`${URL}/todos.json`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-      const data = await response.json();
+      const data = await http.get(`${URL}/todos.json`);
       const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
       dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
     } catch (e) {
