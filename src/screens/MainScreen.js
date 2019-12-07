@@ -5,10 +5,12 @@ import screenContext from "../context/screen/screenContext";
 import Input from "../components/AddTodo";
 import Todo from "../components/Todo";
 import { AppLoader } from "../components/ui/AppLoader";
+import AppButton from "../components/ui/AppButton";
 import theme from "../theme";
+import { TextBold } from "../components/ui/Fonts";
 
 const MainScreen = () => {
-  const { todos, loading, addTodo, removeTodo, fetchTodos } = useContext(
+  const { todos, loading, error, addTodo, removeTodo, fetchTodos } = useContext(
     todoContext
   );
   const { changeScreen } = useContext(screenContext);
@@ -39,6 +41,16 @@ const MainScreen = () => {
 
   if (loading) {
     return <AppLoader />;
+  }
+  console.log(error);
+  if (error) {
+    console.log("THERE IS AN ERROR!");
+    return (
+      <View style={css.error}>
+        <TextBold style={css.errorText}>{error}</TextBold>
+        <AppButton onPress={loadTodos}>Повторить</AppButton>
+      </View>
+    );
   }
 
   let content = (
@@ -88,6 +100,17 @@ const css = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "contain"
+  },
+  error: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  errorText: {
+    fontSize: 20,
+    color: theme.dangerColor,
+    textAlign: "center",
+    marginBottom: 30
   }
 });
 

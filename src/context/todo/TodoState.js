@@ -68,21 +68,28 @@ export default ({ children }) => {
 
   const showLoader = () => dispatch({ type: SHOW_LOADER });
   const hideLoader = () => dispatch({ type: HIDE_LOADER });
-  const showError = () => dispatch({ type: SHOW_ERROR });
+  const showError = error => dispatch({ type: SHOW_ERROR, error });
   const clearError = () => dispatch({ type: CLEAR_ERROR });
 
   const fetchTodos = async () => {
     showLoader();
-    const response = await fetch(URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const data = await response.json();
-    const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
-    dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
-    hideLoader();
+    clearError();
+    try {
+      const response = await fetch(URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
+      dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
+    } catch (e) {
+      showError("Что-то пошло не так...");
+      console.log(`Ошибка: ${e}`);
+    } finally {
+      hideLoader();
+    }
   };
 
   return (
