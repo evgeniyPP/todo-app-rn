@@ -19,7 +19,7 @@ const TodoScreen = () => {
     <View>
       <EditModal
         visible={modal}
-        onCancel={() => setModal(falses)}
+        onCancel={() => setModal(false)}
         value={thisTodo}
         changeTodo={updateTodo}
         todoId={todoId}

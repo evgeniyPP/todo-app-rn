@@ -27,10 +27,10 @@ export default ({ children }) => {
 
   const { changeScreen } = useContext(screenContext);
 
-  const URL = "https://epp-todo-react-native.firebaseio.com/todos.json";
+  const URL = "https://epp-todo-react-native.firebaseio.com";
 
   const addTodo = async value => {
-    const response = await fetch(URL, {
+    const response = await fetch(`${URL}/todos.json`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,13 +42,28 @@ export default ({ children }) => {
     if (data) return true;
   };
 
-  const updateTodo = (id, value) =>
-    dispatch({ type: UPDATE_TODO, payload: { id, value } });
+  const updateTodo = async (id, value) => {
+    clearError();
+    try {
+      await fetch(`${URL}/todos/${id}.json`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ value })
+      });
+      dispatch({ type: UPDATE_TODO, payload: { id, value } });
+    } catch (e) {
+      showError("Что-то пошло не так...");
+    }
+  };
 
   const removeTodo = id => {
     Alert.alert(
       "Удалить задачу?",
-      `Вы уверены, что хотите удалить задачу "${todos[id]}"?`,
+      `Вы уверены, что хотите удалить задачу "${
+        todos.find(todo => todo.id === id).value
+      }"?`,
       [
         {
           text: "Отмена",
@@ -57,9 +72,20 @@ export default ({ children }) => {
         {
           text: "Удалить",
           style: "negative",
-          onPress: () => {
-            changeScreen(null);
-            dispatch({ type: REMOVE_TODO, id });
+          onPress: async () => {
+            clearError();
+            try {
+              await fetch(`${URL}/todos/${id}.json`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              });
+              changeScreen(null);
+              dispatch({ type: REMOVE_TODO, id });
+            } catch (e) {
+              showError("Что-то пошло не так...");
+            }
           }
         }
       ]
@@ -75,7 +101,7 @@ export default ({ children }) => {
     showLoader();
     clearError();
     try {
-      const response = await fetch(URL, {
+      const response = await fetch(`${URL}/todos.json`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -86,7 +112,6 @@ export default ({ children }) => {
       dispatch({ type: FETCH_TODOS, todos: todos.reverse() });
     } catch (e) {
       showError("Что-то пошло не так...");
-      console.log(`Ошибка: ${e}`);
     } finally {
       hideLoader();
     }

@@ -16,13 +16,11 @@ const handlers = {
   }),
   [UPDATE_TODO]: (state, { payload }) => ({
     ...state,
-    todos: state.todos.map((todo, index) =>
-      index === payload.id ? payload.value : todo
-    )
+    todos: state.todos.map(todo => (todo.id === payload.id ? payload : todo))
   }),
   [REMOVE_TODO]: (state, { id }) => ({
     ...state,
-    todos: state.todos.filter((todo, index) => index !== id)
+    todos: state.todos.filter(todo => todo.id !== id)
   }),
   [SHOW_LOADER]: state => ({ ...state, loading: true }),
   [HIDE_LOADER]: state => ({ ...state, loading: false }),

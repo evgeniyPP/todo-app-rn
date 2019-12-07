@@ -6,8 +6,8 @@ import theme from "../theme";
 export default ({ visible, onCancel, value, changeTodo, todoId }) => {
   const [text, setText] = useState(value);
 
-  const handleChange = () => {
-    changeTodo(todoId, text);
+  const handleChange = async () => {
+    await changeTodo(todoId, text);
     onCancel();
   };
 

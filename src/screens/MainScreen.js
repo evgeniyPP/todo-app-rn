@@ -42,9 +42,8 @@ const MainScreen = () => {
   if (loading) {
     return <AppLoader />;
   }
-  console.log(error);
+
   if (error) {
-    console.log("THERE IS AN ERROR!");
     return (
       <View style={css.error}>
         <TextBold style={css.errorText}>{error}</TextBold>
