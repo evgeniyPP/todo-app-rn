@@ -26,7 +26,11 @@ const AddTodo = ({ onSubmit }) => {
         autoCorrect={false}
         autoCapitalize="none"
       />
-      <AntDesign.Button onPress={pressHandler} name="pluscircleo">
+      <AntDesign.Button
+        onPress={pressHandler}
+        name="pluscircleo"
+        style={css.addButton}
+      >
         Добавить
       </AntDesign.Button>
     </View>
@@ -46,6 +50,9 @@ const css = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: theme.mainColor,
     padding: 10
+  },
+  addButton: {
+    backgroundColor: theme.mainColor
   }
 });
 

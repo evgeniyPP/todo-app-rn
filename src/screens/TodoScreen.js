@@ -26,10 +26,12 @@ const TodoScreen = () => {
       />
       <AppCard style={css.card}>
         <TextRegular style={css.text}>{thisTodo}</TextRegular>
+      </AppCard>
+      <View style={css.editBtn}>
         <AppButton onPress={() => setModal(true)}>
           <FontAwesome name="edit" size={20} />
         </AppButton>
-      </AppCard>
+      </View>
       <View style={css.buttons}>
         <View style={css.button}>
           <AppButton onPress={() => changeScreen(null)} color={theme.greyColor}>
@@ -62,6 +64,12 @@ const css = StyleSheet.create({
   },
   card: {
     marginBottom: 20
+  },
+  editBtn: {
+    alignSelf: "center",
+    minWidth: "100%",
+    maxWidth: 350,
+    marginBottom: 5
   }
 });
 
